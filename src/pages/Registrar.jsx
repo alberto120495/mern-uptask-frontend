@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import Alerta from "../components/Alerta";
 function Registrar() {
   const [user, setUser] = useState({
@@ -10,8 +11,10 @@ function Registrar() {
   });
   const [alert, setAlert] = useState({});
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { nombre, email, password } = user;
+
     if (Object.values(user).includes("")) {
       setAlert({
         msg: "Todos los campos son obligatorios",
@@ -37,6 +40,31 @@ function Registrar() {
 
     setAlert({});
     //Crear usuario en la API
+    try {
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/usuarios`,
+        {
+          nombre,
+          email,
+          password,
+        }
+      );
+      setAlert({
+        msg: data.msg,
+        error: false,
+      });
+      setUser({
+        nombre: "",
+        email: "",
+        password: "",
+        password2: "",
+      });
+    } catch (error) {
+      setAlert({
+        msg: error.response.data.msg,
+        error: true,
+      });
+    }
   };
 
   const { msg } = alert;

@@ -6,6 +6,7 @@ import NuevoPassword from "./pages/NuevoPassword";
 import OlvidePassword from "./pages/OlvidePassword";
 import ConfirmarCuenta from "./pages/ConfirmarCuenta";
 function App() {
+ 
   return (
     <BrowserRouter>
       <Routes>
