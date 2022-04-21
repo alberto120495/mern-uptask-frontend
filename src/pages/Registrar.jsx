@@ -1,14 +1,57 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import Alerta from "../components/Alerta";
 function Registrar() {
+  const [user, setUser] = useState({
+    nombre: "",
+    email: "",
+    password: "",
+    password2: "",
+  });
+  const [alert, setAlert] = useState({});
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (Object.values(user).includes("")) {
+      setAlert({
+        msg: "Todos los campos son obligatorios",
+        error: true,
+      });
+      return;
+    }
+    if (user.password !== user.password2) {
+      setAlert({
+        msg: "Las contraseñas no son iguales",
+        error: true,
+      });
+      return;
+    }
+
+    if (user.password.length < 6) {
+      setAlert({
+        msg: "La contraseña debe tener al menos 6 caracteres",
+        error: true,
+      });
+      return;
+    }
+
+    setAlert({});
+    //Crear usuario en la API
+  };
+
+  const { msg } = alert;
+
   return (
     <>
       <h1 className="text-sky-600 font-medium text-5xl capitalize">
         Crea tu cuenta y administra tus{" "}
         <span className="text-slate-700">proyectos</span>
       </h1>
-
-      <form className="my-10 bg-white shadow-md rounded-md p-5">
+      {msg && <Alerta alerta={alert} />}
+      <form
+        className="my-10 bg-white shadow-md rounded-md p-5"
+        onSubmit={handleSubmit}
+      >
         <div className="my-2">
           <label
             htmlFor="nombre"
@@ -22,6 +65,10 @@ function Registrar() {
             name="nombre"
             placeholder="Ingresa tu nombre"
             className="w-full px-3 py-2 text-gray-700 border rounded-xl outline-none focus:border-sky-600 focus:shadow-outline"
+            value={user.nombre}
+            onChange={(e) =>
+              setUser({ ...user, [e.target.name]: e.target.value })
+            }
           />
         </div>
         <div className="my-2">
@@ -37,6 +84,10 @@ function Registrar() {
             name="email"
             placeholder="Ingresa tu email"
             className="w-full px-3 py-2 text-gray-700 border rounded-xl outline-none focus:border-sky-600 focus:shadow-outline"
+            value={user.email}
+            onChange={(e) =>
+              setUser({ ...user, [e.target.name]: e.target.value })
+            }
           />
         </div>
 
@@ -53,6 +104,10 @@ function Registrar() {
             name="password"
             placeholder="Ingresa tu contraseña"
             className="w-full px-3 py-2 text-gray-700 border rounded-xl outline-none focus:border-sky-600 focus:shadow-outline"
+            value={user.password}
+            onChange={(e) =>
+              setUser({ ...user, [e.target.name]: e.target.value })
+            }
           />
         </div>
 
@@ -69,6 +124,10 @@ function Registrar() {
             name="password2"
             placeholder="Repetir contraseña"
             className="w-full px-3 py-2 text-gray-700 border rounded-xl outline-none focus:border-sky-600 focus:shadow-outline"
+            value={user.password2}
+            onChange={(e) =>
+              setUser({ ...user, [e.target.name]: e.target.value })
+            }
           />
         </div>
         <input
