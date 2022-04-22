@@ -5,7 +5,7 @@ import clienteAxios from "../config/clienteAxios";
 import useAuth from "../hooks/useAuth";
 
 function Login() {
-  const { user } = useAuth();
+  const { setAuth } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +28,7 @@ function Login() {
       });
       setAlerta({});
       localStorage.setItem("token", data.token);
+      setAuth(data);
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
