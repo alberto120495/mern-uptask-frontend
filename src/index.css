@@ -4,6 +4,6 @@
 
 body {
   --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+  background-color: rgb(5, 16, 58 / var(--tw-bg-opacity));
   min-height: 100vh;
 }

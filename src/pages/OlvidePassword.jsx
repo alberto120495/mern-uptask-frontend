@@ -1,6 +1,40 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import Alerta from "../components/Alerta";
+import clienteAxios from "../config/clienteAxios";
 
 function OlvidePassword() {
+  const [email, setEmail] = useState("");
+  const [alerta, setAlerta] = useState({});
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (email === "" || email.length < 6) {
+      setAlerta({
+        msg: "El email es obligatorio",
+        error: true,
+      });
+      return;
+    }
+
+    try {
+      const { data } = await clienteAxios.post(`/usuarios/olvide-password`, {
+        email,
+      });
+      setAlerta({
+        msg: data.msg,
+        error: false,
+      });
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true,
+      });
+    }
+  };
+
+  const { msg } = alerta;
   return (
     <>
       <h1 className="text-sky-600 font-medium text-5xl capitalize">
@@ -8,7 +42,11 @@ function OlvidePassword() {
         <span className="text-slate-700">proyectos</span>
       </h1>
 
-      <form className="my-10 bg-white shadow-md rounded-md p-5">
+      {msg && <Alerta alerta={alerta} />}
+      <form
+        className="my-10 bg-white shadow-md rounded-md p-5"
+        onSubmit={handleSubmit}
+      >
         <div className="my-2">
           <label
             htmlFor="email"
@@ -22,6 +60,8 @@ function OlvidePassword() {
             name="email"
             placeholder="Ingresa tu email"
             className="w-full px-3 py-2 text-gray-700 border rounded-xl outline-none focus:border-sky-600 focus:shadow-outline"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
