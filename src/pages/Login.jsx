@@ -5,11 +5,11 @@ import clienteAxios from "../config/clienteAxios";
 import useAuth from "../hooks/useAuth";
 
 function Login() {
-  const { setAuth } = useAuth();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alerta, setAlerta] = useState({});
+
+  const { setAuth } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

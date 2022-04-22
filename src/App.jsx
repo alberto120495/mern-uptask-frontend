@@ -6,6 +6,8 @@ import NuevoPassword from "./pages/NuevoPassword";
 import OlvidePassword from "./pages/OlvidePassword";
 import ConfirmarCuenta from "./pages/ConfirmarCuenta";
 import { AuthProvider } from "./context/AuthProvider";
+import RutaProtegida from "./layouts/RutaProtegida";
+import Proyectos from "./pages/Proyectos";
 
 function App() {
   return (
@@ -22,6 +24,9 @@ function App() {
           </Route>
 
           {/* Area Privada */}
+          <Route path="/proyectos" element={<RutaProtegida />}>
+            <Route index element={<Proyectos />} />
+          </Route>
         </Routes>
       </AuthProvider>
     </BrowserRouter>
