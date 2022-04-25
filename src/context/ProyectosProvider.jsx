@@ -41,6 +41,37 @@ function ProyectosProvider({ children }) {
   };
 
   const submitProyecto = async (proyecto) => {
+    if (proyecto.uid) {
+      editarProyecto(proyecto);
+    } else {
+      nuevoProyecto(proyecto);
+    }
+  };
+
+  const editarProyecto = async (proyecto) => {
+    const { proyectoForm } = proyecto;
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await clienteAxios.put(
+        `/proyectos/${proyecto.uid}`,
+        proyectoForm,
+        config
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const nuevoProyecto = async (proyecto) => {
+    const { proyectoForm } = proyecto;
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -51,7 +82,11 @@ function ProyectosProvider({ children }) {
         },
       };
 
-      const { data } = await clienteAxios.post("/proyectos", proyecto, config);
+      const { data } = await clienteAxios.post(
+        "/proyectos",
+        proyectoForm,
+        config
+      );
       setProyectos([...proyectos, data]);
       setAlerta({
         msg: "Proyecto creado correctamente",

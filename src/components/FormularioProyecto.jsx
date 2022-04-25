@@ -39,13 +39,14 @@ function FormularioProyecto() {
     }
 
     //Pasar datos al Provider
-    await submitProyecto(proyectoForm);
+    await submitProyecto({ proyectoForm, uid });
     setProyectoForm({
       nombre: "",
       descripcion: "",
       fechaEntrega: "",
       cliente: "",
     });
+    setUid(null);
   };
   const { msg } = alerta;
   return (
