@@ -1,19 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import useProyectos from "../hooks/useProyecto";
 import Alerta from "./Alerta";
-
 function FormularioProyecto() {
-  const { alerta, mostrarAlerta, submitProyecto } = useProyectos();
-  const [proyecto, setProyecto] = useState({
+  const { alerta, mostrarAlerta, submitProyecto, proyecto } = useProyectos();
+
+  const [proyectoForm, setProyectoForm] = useState({
     nombre: "",
     descripcion: "",
     fechaEntrega: "",
     cliente: "",
   });
 
+  const [uid, setUid] = useState(null);
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      setUid(proyecto._id);
+      setProyectoForm({
+        nombre: proyecto.nombre,
+        descripcion: proyecto.descripcion,
+        fechaEntrega: proyecto.fechaEntrega?.split("T")[0],
+        cliente: proyecto.cliente,
+      });
+    }
+  }, [id]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (Object.values(proyecto).includes("")) {
+    if (Object.values(proyectoForm).includes("")) {
       mostrarAlerta({
         msg: "Todos los campos son obligatorios",
         error: true,
@@ -22,8 +39,8 @@ function FormularioProyecto() {
     }
 
     //Pasar datos al Provider
-    await submitProyecto(proyecto);
-    setProyecto({
+    await submitProyecto(proyectoForm);
+    setProyectoForm({
       nombre: "",
       descripcion: "",
       fechaEntrega: "",
@@ -52,9 +69,12 @@ function FormularioProyecto() {
             id="nombre"
             name="nombre"
             placeholder="Nombre del Proyecto"
-            value={proyecto.nombre}
+            value={proyectoForm.nombre}
             onChange={(e) =>
-              setProyecto({ ...proyecto, [e.target.name]: e.target.value })
+              setProyectoForm({
+                ...proyectoForm,
+                [e.target.name]: e.target.value,
+              })
             }
           />
         </div>
@@ -70,9 +90,12 @@ function FormularioProyecto() {
             id="descripcion"
             name="descripcion"
             placeholder="Descripcion del Proyecto"
-            value={proyecto.descripcion}
+            value={proyectoForm.descripcion}
             onChange={(e) =>
-              setProyecto({ ...proyecto, [e.target.name]: e.target.value })
+              setProyectoForm({
+                ...proyectoForm,
+                [e.target.name]: e.target.value,
+              })
             }
           />
         </div>
@@ -88,9 +111,12 @@ function FormularioProyecto() {
             type="date"
             id="fecha-entrega"
             name="fechaEntrega"
-            value={proyecto.fechaEntrega}
+            value={proyectoForm.fechaEntrega}
             onChange={(e) =>
-              setProyecto({ ...proyecto, [e.target.name]: e.target.value })
+              setProyectoForm({
+                ...proyectoForm,
+                [e.target.name]: e.target.value,
+              })
             }
           />
         </div>
@@ -107,15 +133,18 @@ function FormularioProyecto() {
             id="cliente"
             name="cliente"
             placeholder="Nombre del Cliente"
-            value={proyecto.cliente}
+            value={proyectoForm.cliente}
             onChange={(e) =>
-              setProyecto({ ...proyecto, [e.target.name]: e.target.value })
+              setProyectoForm({
+                ...proyectoForm,
+                [e.target.name]: e.target.value,
+              })
             }
           />
         </div>
         <input
           type="submit"
-          value="Crear Proyecto"
+          value={`${uid ? "Guardar Cambios" : "Crear Proyecto"}`}
           className="bg-sky-600 p-3 w-full text-white text-sm uppercase rounded-lg shadow-md cursor-pointer hover:bg-sky-700 transition-colors"
         />
       </form>
