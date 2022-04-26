@@ -1,9 +1,42 @@
 import { Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { useParams } from "react-router-dom";
 import useProyectos from "../hooks/useProyecto";
+import Alerta from "./Alerta";
+
+const PRIORIDAD = ["Baja", "Media", "Alta"];
 
 const ModalFormularioTarea = () => {
-  const { handleModalTarea, modalFormularioTarea } = useProyectos();
+  const { id } = useParams();
+  const {
+    handleModalTarea,
+    modalFormularioTarea,
+    alerta,
+    mostrarAlerta,
+    submitTarea,
+  } = useProyectos();
+
+  const [tareaForm, setTareaForm] = useState({
+    nombre: "",
+    descripcion: "",
+    fechaEntrega: "",
+    prioridad: "",
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (Object.values(tareaForm).includes("")) {
+      mostrarAlerta({
+        msg: "Todos los campos son obligatorios",
+        error: true,
+      });
+      return;
+    }
+    await submitTarea({ ...tareaForm, proyecto: id });
+  };
+
+  const { msg } = alerta;
+
   return (
     <Transition.Root show={modalFormularioTarea} as={Fragment}>
       <Dialog
@@ -70,8 +103,103 @@ const ModalFormularioTarea = () => {
                     as="h3"
                     className="text-lg leading-6 font-bold text-gray-900"
                   >
-                    <h1>Titulo</h1>
+                    Crear Tarea
                   </Dialog.Title>
+                  <form className="my-10" onSubmit={handleSubmit}>
+                    {msg && <Alerta alerta={alerta} />}
+
+                    <div className="mb-5">
+                      <label
+                        htmlFor="nombre"
+                        className="text-gray-700 uppercase font-medium text-sm"
+                      >
+                        Nombre Tarea
+                      </label>
+                      <input
+                        type="text"
+                        name="nombre"
+                        id="nombre"
+                        className="w-full p-2 outline-none border-b mt-2 placeholder-gray-400 "
+                        placeholder="Nombre de la Tarea"
+                        value={tareaForm.nombre}
+                        onChange={(e) =>
+                          setTareaForm({
+                            ...tareaForm,
+                            [e.target.name]: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="mb-5">
+                      <label
+                        htmlFor="descripcion"
+                        className="text-gray-700 uppercase font-medium text-sm"
+                      >
+                        Descripcion Tarea
+                      </label>
+                      <textarea
+                        name="descripcion"
+                        id="descripcion"
+                        className="w-full p-2 outline-none border mt-2 placeholder-gray-400 "
+                        placeholder="Descripcion de la Tarea"
+                        value={tareaForm.descripcion}
+                        onChange={(e) =>
+                          setTareaForm({
+                            ...tareaForm,
+                            [e.target.name]: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="mb-5">
+                      <label
+                        htmlFor="fechaEntrega"
+                        className="text-gray-700 uppercase font-medium text-sm"
+                      >
+                        Fecha Entrega
+                      </label>
+                      <input
+                        type="date"
+                        name="fechaEntrega"
+                        id="fechaEntrega"
+                        className="w-full p-2 outline-none border-b mt-2 placeholder-gray-400 "
+                        value={tareaForm.fechaEntrega}
+                        onChange={(e) =>
+                          setTareaForm({
+                            ...tareaForm,
+                            [e.target.name]: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+                    <div className="mb-5">
+                      <select
+                        className="w-full p-2 outline-none border-b mt-2 placeholder-gray-400 "
+                        name="prioridad"
+                        id="prioridad"
+                        value={tareaForm.prioridad}
+                        onChange={(e) =>
+                          setTareaForm({
+                            ...tareaForm,
+                            [e.target.name]: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="">Seleccione Prioridad</option>
+                        {PRIORIDAD.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <input
+                      type="submit"
+                      value="Crear Tarea"
+                      className="w-full p-3 bg-sky-600 hover:bg-sky-700 cursor-pointer transition-colors rounded-md text-white text-sm uppercase"
+                    />
+                  </form>
                 </div>
               </div>
             </div>
