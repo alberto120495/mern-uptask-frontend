@@ -174,6 +174,19 @@ function ProyectosProvider({ children }) {
   };
 
   const submitTarea = async (tarea) => {
+    if (tarea?.uid) {
+      await editarTarea(tarea);
+    } else {
+      await crearTarea(tarea);
+    }
+  };
+
+  const handleModalEditarTarea = (tarea) => {
+    setTarea(tarea);
+    setModalFormularioTarea(true);
+  };
+
+  const crearTarea = async (tarea) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
@@ -196,9 +209,37 @@ function ProyectosProvider({ children }) {
     }
   };
 
-  const handleModalEditarTarea = (tarea) => {
-    setTarea(tarea);
-    setModalFormularioTarea(true);
+  const editarTarea = async (tarea) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clienteAxios.put(
+        `/tareas/${tarea.uid}`,
+        tarea,
+        config
+      );
+      //Sincronizar el state
+      const proyectoActualizado = { ...proyecto };
+      proyectoActualizado.tareas = proyectoActualizado.tareas.map(
+        (tareaState) => {
+          if (tareaState._id === data._id) return data;
+          return tareaState;
+        }
+      );
+      setProyecto(proyectoActualizado);
+
+      setAlerta({});
+      setModalFormularioTarea(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
