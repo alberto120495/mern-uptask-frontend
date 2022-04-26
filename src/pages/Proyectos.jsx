@@ -3,6 +3,7 @@ import PreviewProyecto from "../components/PreviewProyecto";
 import useProyectos from "../hooks/useProyecto";
 function Proyectos() {
   const { proyectos } = useProyectos();
+
   return (
     <>
       <h1 className="text-4xl font-semibold">Proyectos</h1>

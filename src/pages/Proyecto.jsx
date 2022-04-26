@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import ModalFormularioTarea from "../components/ModalFormularioTarea";
 import Spinner from "../components/Spinner";
+import Tarea from "../components/Tarea";
 import useProyectos from "../hooks/useProyecto";
 
 function Proyecto() {
@@ -61,6 +62,20 @@ function Proyecto() {
         </svg>
         Nueva tarea
       </button>
+
+      <p className="font-bold text-xl mt-10">Tareas del proyecto</p>
+      <div className="bg-white shadow-md mt-10 rounded-lg">
+        {proyecto.tareas?.length ? (
+          proyecto.tareas?.map((tarea) => (
+            <Tarea key={tarea._id} tarea={tarea} />
+          ))
+        ) : (
+          <p className="text-center my-5 p-10">
+            No hay tareas en este proyecto
+          </p>
+        )}
+      </div>
+
       <ModalFormularioTarea />
     </>
   );
