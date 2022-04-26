@@ -6,8 +6,9 @@ import useProyectos from "../hooks/useProyecto";
 
 function Proyecto() {
   const { id } = useParams();
-  const { obtenerProyecto, proyecto, cargando } = useProyectos();
-  const [modal, setModal] = useState(false);
+  const { obtenerProyecto, proyecto, cargando, handleModalTarea } =
+    useProyectos();
+
   useEffect(() => {
     obtenerProyecto(id);
   }, []);
@@ -44,7 +45,7 @@ function Proyecto() {
       <button
         type="button"
         className="text-sm px-5 py-3 w-full md:w-auto rounded-lg uppercase font-medium text-white bg-sky-400 hover:bg-sky-500 mt-5 flex gap-2 items-center justify-center"
-        onClick={() => setModal(true)}
+        onClick={handleModalTarea}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +61,7 @@ function Proyecto() {
         </svg>
         Nueva tarea
       </button>
-      <ModalFormularioTarea modal={modal} setModal={setModal} />
+      <ModalFormularioTarea />
     </>
   );
 }
