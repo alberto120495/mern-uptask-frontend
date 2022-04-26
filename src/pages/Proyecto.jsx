@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import ModalFormularioTarea from "../components/ModalFormualrioTarea";
 import Spinner from "../components/Spinner";
 import useProyectos from "../hooks/useProyecto";
 
 function Proyecto() {
   const { id } = useParams();
   const { obtenerProyecto, proyecto, cargando } = useProyectos();
+
   useEffect(() => {
     obtenerProyecto(id);
   }, []);
@@ -57,6 +59,7 @@ function Proyecto() {
         </svg>
         Nueva tarea
       </button>
+      <ModalFormularioTarea />
     </>
   );
 }
