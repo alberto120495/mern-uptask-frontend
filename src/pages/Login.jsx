@@ -11,6 +11,8 @@ function Login() {
 
   const { setAuth } = useAuth();
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if ([email, password].includes("")) {
@@ -29,6 +31,7 @@ function Login() {
       setAlerta({});
       localStorage.setItem("token", data.token);
       setAuth(data);
+      navigate("/proyectos");
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
