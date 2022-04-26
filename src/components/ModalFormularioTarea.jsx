@@ -14,6 +14,7 @@ const ModalFormularioTarea = () => {
     alerta,
     mostrarAlerta,
     submitTarea,
+    tarea,
   } = useProyectos();
 
   const [tareaForm, setTareaForm] = useState({
@@ -22,6 +23,8 @@ const ModalFormularioTarea = () => {
     fechaEntrega: "",
     prioridad: "",
   });
+
+  const [uid, setUid] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,9 +36,33 @@ const ModalFormularioTarea = () => {
       return;
     }
     await submitTarea({ ...tareaForm, proyecto: id });
+    setTareaForm({
+      nombre: "",
+      descripcion: "",
+      fechaEntrega: "",
+      prioridad: "",
+    });
   };
 
   const { msg } = alerta;
+
+  useEffect(() => {
+    if (tarea?._id) {
+      setUid(tarea._id);
+      setTareaForm({
+        ...tarea,
+        fechaEntrega: tarea.fechaEntrega?.split("T")[0],
+      });
+      return;
+    }
+    setUid("");
+    setTareaForm({
+      nombre: "",
+      descripcion: "",
+      fechaEntrega: "",
+      prioridad: "",
+    });
+  }, [tarea]);
 
   return (
     <Transition.Root show={modalFormularioTarea} as={Fragment}>
@@ -103,7 +130,7 @@ const ModalFormularioTarea = () => {
                     as="h3"
                     className="text-lg leading-6 font-bold text-gray-900"
                   >
-                    Crear Tarea
+                    {uid ? "Editar Tarea" : "Crear Tarea"}
                   </Dialog.Title>
                   <form className="my-10" onSubmit={handleSubmit}>
                     {msg && <Alerta alerta={alerta} />}
@@ -196,7 +223,7 @@ const ModalFormularioTarea = () => {
 
                     <input
                       type="submit"
-                      value="Crear Tarea"
+                      value={uid ? "Guardar cambios" : "Crear Tarea"}
                       className="w-full p-3 bg-sky-600 hover:bg-sky-700 cursor-pointer transition-colors rounded-md text-white text-sm uppercase"
                     />
                   </form>
