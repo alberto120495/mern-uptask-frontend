@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Alerta from "../components/Alerta";
+import Colaborador from "../components/Colaborador";
 import ModalEliminarTarea from "../components/ModalEliminarTarea";
 import ModalFormularioTarea from "../components/ModalFormularioTarea";
 import Spinner from "../components/Spinner";
@@ -94,6 +95,17 @@ function Proyecto() {
         </Link>
       </div>
 
+      <div className="bg-white shadow-md mt-10 rounded-lg">
+        {proyecto.colaboradores?.length ? (
+          proyecto.colaboradores?.map((colaborador) => (
+            <Colaborador key={colaborador._id} colaborador={colaborador} />
+          ))
+        ) : (
+          <p className="text-center my-5 p-10">
+            No hay colaboradores en este proyecto
+          </p>
+        )}
+      </div>
       <ModalFormularioTarea />
       <ModalEliminarTarea />
     </>

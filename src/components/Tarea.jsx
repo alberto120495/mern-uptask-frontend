@@ -24,15 +24,22 @@ function Tarea({ tarea }) {
           Editar
         </button>
         {estado ? (
-          <button className="bg-sky-600 text-white px-4 py-3 text-sm rounded-lg">
+          <button
+            type="button"
+            className="bg-sky-600 text-white px-4 py-3 text-sm rounded-lg"
+          >
             Completa
           </button>
         ) : (
-          <button className="bg-gray-600 text-white px-4 py-3 text-sm rounded-lg">
+          <button
+            type="button"
+            className="bg-gray-600 text-white px-4 py-3 text-sm rounded-lg"
+          >
             Incompleta
           </button>
         )}
         <button
+          type="button"
           className="bg-red-600 text-white px-4 py-3 text-sm rounded-lg"
           onClick={() => handleModalEliminarTarea(tarea)}
         >

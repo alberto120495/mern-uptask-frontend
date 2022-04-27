@@ -343,9 +343,6 @@ function ProyectosProvider({ children }) {
         msg: data.msg,
         error: false,
       });
-      setTimeout(() => {
-        setAlerta({});
-      }, 2000);
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
@@ -354,6 +351,9 @@ function ProyectosProvider({ children }) {
     } finally {
       setCargando(false);
       setColaborador({});
+      setTimeout(() => {
+        setAlerta({});
+      }, 2000);
     }
   };
   return (
