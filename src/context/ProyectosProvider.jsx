@@ -411,6 +411,39 @@ function ProyectosProvider({ children }) {
     }
   };
 
+  const completarTarea = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clienteAxios.post(
+        `/tareas/estado/${id}`,
+        {},
+        config
+      );
+      const proyectoActualizado = { ...proyecto };
+
+      proyectoActualizado.tareas = proyectoActualizado.tareas.map(
+        (tareaState) => {
+          if (tareaState._id === id) return data;
+          return tareaState;
+        }
+      );
+
+      setProyecto(proyectoActualizado);
+      setTarea({});
+      setAlerta({});
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   return (
     <ProyectosContext.Provider
       value={{
@@ -436,6 +469,7 @@ function ProyectosProvider({ children }) {
         handleModalEliminarColaborador,
         modalEliminarColaborador,
         eliminarColaborador,
+        completarTarea,
       }}
     >
       {children}
