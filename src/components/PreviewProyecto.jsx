@@ -1,6 +1,9 @@
+import useAuth from "../hooks/useAuth";
 import { Link } from "react-router-dom";
 function PreviewProyecto({ proyecto }) {
-  const { nombre, _id, cliente } = proyecto;
+  const { auth } = useAuth();
+  const { nombre, _id, cliente, creador } = proyecto;
+
   return (
     <div className=" p-2">
       <div className="bg-gray-100 p-5 rounded-md flex items-center justify-between">
@@ -10,6 +13,11 @@ function PreviewProyecto({ proyecto }) {
             {cliente}
           </span>
         </p>
+        {auth._id !== creador && (
+          <p className="bg-green-500 p-1 text-xs text-white rounded-lg font-medium">
+            Colaborador
+          </p>
+        )}
         <Link to={`${_id}`} className="text-sky-600 ">
           Ver Proyecto
         </Link>
