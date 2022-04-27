@@ -22,7 +22,9 @@ function Proyecto() {
   const { msg } = alerta;
 
   if (cargando) return <Spinner />;
-  return (
+  return msg && alerta.error ? (
+    <Alerta alerta={alerta} />
+  ) : (
     <>
       <div className="flex justify-between">
         <h1 className="text-4xl font-semibold">{nombre}</h1>
