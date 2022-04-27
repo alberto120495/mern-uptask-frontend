@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import Alerta from "../components/Alerta";
 import FormularioColaborador from "../components/FormularioColaborador";
 import Spinner from "../components/Spinner";
 import useProyectos from "../hooks/useProyecto";
@@ -10,6 +11,7 @@ function NuevoColaborador() {
     cargando,
     colaborador,
     agregarColaborador,
+    alerta,
   } = useProyectos();
   const { id } = useParams();
   useEffect(() => {
@@ -17,6 +19,7 @@ function NuevoColaborador() {
   }, []);
 
   if (cargando) return <Spinner />;
+  if (!proyecto?._id) return <Alerta alerta={alerta} />;
   return (
     <>
       <h1 className="text-4xl font-semibold">
