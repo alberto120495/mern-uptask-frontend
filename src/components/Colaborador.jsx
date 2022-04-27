@@ -1,5 +1,8 @@
+import useProyectos from "../hooks/useProyecto";
+
 function Colaborador({ colaborador }) {
   const { nombre, email } = colaborador;
+  const { handleModalEliminarColaborador } = useProyectos();
   return (
     <div className="border-b p-5 flex justify-between items-center ">
       <div>
@@ -10,7 +13,7 @@ function Colaborador({ colaborador }) {
       <button
         type="button"
         className="bg-red-600 text-white px-4 py-3 text-sm rounded-lg"
-        onClick={() => handleModalEliminarTarea(tarea)}
+        onClick={() => handleModalEliminarColaborador(colaborador)}
       >
         Eliminar
       </button>

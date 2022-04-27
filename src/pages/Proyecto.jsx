@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Alerta from "../components/Alerta";
 import Colaborador from "../components/Colaborador";
+import ModalEliminarColaborador from "../components/ModalEliminarColaborador";
 import ModalEliminarTarea from "../components/ModalEliminarTarea";
 import ModalFormularioTarea from "../components/ModalFormularioTarea";
 import Spinner from "../components/Spinner";
@@ -108,6 +109,7 @@ function Proyecto() {
       </div>
       <ModalFormularioTarea />
       <ModalEliminarTarea />
+      <ModalEliminarColaborador />
     </>
   );
 }

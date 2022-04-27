@@ -11,6 +11,8 @@ function ProyectosProvider({ children }) {
   const [cargando, setCargando] = useState(false);
   const [modalFormularioTarea, setModalFormularioTarea] = useState(false);
   const [modalEliminarTarea, setModalEliminarTarea] = useState(false);
+  const [modalEliminarColaborador, setModalEliminarColaborador] =
+    useState(false);
   const [tarea, setTarea] = useState({});
   const [colaborador, setColaborador] = useState({});
 
@@ -356,6 +358,58 @@ function ProyectosProvider({ children }) {
       }, 2000);
     }
   };
+
+  const handleModalEliminarColaborador = (colaborador) => {
+    setModalEliminarColaborador(!modalEliminarColaborador);
+    setColaborador(colaborador);
+  };
+
+  const eliminarColaborador = async () => {
+    setCargando(true);
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const { data } = await clienteAxios.post(
+        `/proyectos/eliminar-colaborador/${proyecto._id}`,
+        { id: colaborador._id },
+        config
+      );
+
+      const proyectoActualizado = { ...proyecto };
+
+      proyectoActualizado.colaboradores =
+        proyectoActualizado.colaboradores.filter((colaboradorState) => {
+          return colaboradorState._id !== colaborador._id;
+        });
+
+      setProyecto(proyectoActualizado);
+
+      setAlerta({
+        msg: data.msg,
+        error: false,
+      });
+      setColaborador({});
+      setModalEliminarColaborador(false);
+    } catch (error) {
+      setAlerta({
+        msg: error.response.data.msg,
+        error: true,
+      });
+    } finally {
+      setCargando(false);
+      setTimeout(() => {
+        setAlerta({});
+      }, 2000);
+    }
+  };
+
   return (
     <ProyectosContext.Provider
       value={{
@@ -378,6 +432,9 @@ function ProyectosProvider({ children }) {
         submitColaborador,
         colaborador,
         agregarColaborador,
+        handleModalEliminarColaborador,
+        modalEliminarColaborador,
+        eliminarColaborador,
       }}
     >
       {children}
