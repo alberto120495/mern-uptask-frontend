@@ -84,6 +84,15 @@ function Proyecto() {
           </p>
         )}
       </div>
+      <div className="flex items-center justify-between mt-10 ">
+        <p className="font-bold text-xl ">Colaboradores </p>
+        <Link
+          className="text-gray-400 uppercase font-medium hover:text-black"
+          to={`/proyectos/nuevo-colaborador/${proyecto._id}`}
+        >
+          Añadir
+        </Link>
+      </div>
 
       <ModalFormularioTarea />
       <ModalEliminarTarea />
