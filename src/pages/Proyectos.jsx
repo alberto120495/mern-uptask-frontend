@@ -10,10 +10,7 @@ function Proyectos() {
 
   useEffect(() => {
     socket = io(import.meta.env.VITE_BACKEND_URL);
-    return () => {
-      socket.emit("disconnect");
-      socket.off();
-    };
+    socket.emit("prueba", "Alberto");
   }, []);
 
   const { msg } = alerta;
