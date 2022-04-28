@@ -11,7 +11,11 @@ function Proyectos() {
   useEffect(() => {
     socket = io(import.meta.env.VITE_BACKEND_URL);
     socket.emit("prueba", "Alberto");
-  }, []);
+
+    socket.on("respuesta", (nombre) => {
+      console.log("desde el frontend", nombre);
+    });
+  });
 
   const { msg } = alerta;
   return (
