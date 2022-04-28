@@ -5,7 +5,7 @@ function PreviewProyecto({ proyecto }) {
   const { nombre, _id, cliente, creador } = proyecto;
 
   return (
-    <div className=" p-2">
+    <div className="p-2 ">
       <div className="bg-gray-100 p-5 rounded-md flex items-center justify-between">
         <p className="text-2xl font-semibold ">
           {nombre}

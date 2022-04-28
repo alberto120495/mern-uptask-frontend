@@ -3,13 +3,16 @@ function Header() {
   return (
     <header className="px-4 py-5 bg-white border-b">
       <div className="md:flex md:justify-between items-center">
-        <h2 className="text-4xl text-sky-600 text-center">UpTask</h2>
-        <input
-          type="search"
-          placeholder="Buscar Proyecto"
-          className="rounded-lg lg:w-96 block p-2 border outline-none"
-        />
-        <div className="flex items-center gap-4">
+        <h2 className="text-4xl text-sky-600 text-center mb-5 md:b-0">
+          UpTask
+        </h2>
+        <div className="flex justify-between  items-center gap-4">
+          <button
+            type="button"
+            className="tex-sm border-sky-600 border rounded-md p-3  hover:bg-sky-600 hover:text-white transition-colors"
+          >
+            Buscar Proyecto
+          </button>
           <Link to="/proyectos" className="text-sky-600 hover:underline ">
             Proyectos
           </Link>
