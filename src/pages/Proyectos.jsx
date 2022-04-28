@@ -1,12 +1,22 @@
-import React from "react";
+import { useEffect } from "react";
 import Alerta from "../components/Alerta";
 import PreviewProyecto from "../components/PreviewProyecto";
 import useProyectos from "../hooks/useProyecto";
+import io from "socket.io-client";
+
+let socket;
 function Proyectos() {
   const { proyectos, alerta } = useProyectos();
 
-  const { msg } = alerta;
+  useEffect(() => {
+    socket = io(import.meta.env.VITE_BACKEND_URL);
+    return () => {
+      socket.emit("disconnect");
+      socket.off();
+    };
+  }, []);
 
+  const { msg } = alerta;
   return (
     <>
       <h1 className="text-4xl font-semibold">Proyectos</h1>
