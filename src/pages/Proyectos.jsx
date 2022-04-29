@@ -2,20 +2,9 @@ import { useEffect } from "react";
 import Alerta from "../components/Alerta";
 import PreviewProyecto from "../components/PreviewProyecto";
 import useProyectos from "../hooks/useProyecto";
-import io from "socket.io-client";
 
-let socket;
 function Proyectos() {
   const { proyectos, alerta } = useProyectos();
-
-  useEffect(() => {
-    socket = io(import.meta.env.VITE_BACKEND_URL);
-    socket.emit("prueba", "Alberto");
-
-    socket.on("respuesta", (nombre) => {
-      console.log("desde el frontend", nombre);
-    });
-  });
 
   const { msg } = alerta;
   return (
