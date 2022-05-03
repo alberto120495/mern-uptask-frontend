@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import clienteAxios from "../config/clienteAxios";
 import io from "socket.io-client";
+import useAuth from "../hooks/useAuth";
 
 let socket;
 
@@ -22,6 +23,7 @@ function ProyectosProvider({ children }) {
   const [buscador, setBuscador] = useState(false);
 
   const navigate = useNavigate();
+  const { auth } = useAuth();
 
   useEffect(() => {
     const obtenerProyectos = async () => {
@@ -42,7 +44,7 @@ function ProyectosProvider({ children }) {
       }
     };
     obtenerProyectos();
-  }, []);
+  }, [auth]);
 
   useEffect(() => {
     socket = io(import.meta.env.VITE_BACKEND_URL);
@@ -494,6 +496,13 @@ function ProyectosProvider({ children }) {
     setProyecto(proyectoActualizado);
   };
 
+  const cerrarSesionProyectos = () => {
+    setProyectos([]);
+    setProyecto({});
+    setTarea({});
+    setAlerta({});
+  };
+
   return (
     <ProyectosContext.Provider
       value={{
@@ -526,6 +535,7 @@ function ProyectosProvider({ children }) {
         eliminarTareaProyecto,
         actualizarTareaProyecto,
         cambiarEstadoTarea,
+        cerrarSesionProyectos,
       }}
     >
       {children}
